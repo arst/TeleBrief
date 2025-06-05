@@ -46,4 +46,4 @@ public sealed class TypeResolver : ITypeResolver
     {
         return type == null ? null : _provider.GetService(type);
     }
-} 
+}

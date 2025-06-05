@@ -4,7 +4,11 @@ using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace TeleBrief.Infrastructure.Gemini;
 
-public class GeminiChatCompletionService(string endpoint, string model, string key, IReadOnlyDictionary<string, object?> attributes)
+public class GeminiChatCompletionService(
+    string endpoint,
+    string model,
+    string key,
+    IReadOnlyDictionary<string, object?> attributes)
     : IChatCompletionService
 {
     private readonly HttpClient _httpClient = new()
@@ -33,7 +37,7 @@ public class GeminiChatCompletionService(string endpoint, string model, string k
             $"models/{model}:generateContent?key={key}",
             payload,
             cancellationToken);
-        
+
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content.ReadFromJsonAsync<GeminiResponse>(cancellationToken);

@@ -16,7 +16,7 @@ public class ChannelScrapper
         doc.LoadHtml(html);
 
         var messages = new List<string>();
-        
+
         var messageNodes = doc.DocumentNode
             .SelectNodes("//div[contains(@class,'tgme_widget_message_wrap')]");
 
@@ -35,12 +35,8 @@ public class ChannelScrapper
 
             var dateStr = timeNode.GetAttributeValue("datetime", string.Empty);
             if (DateTimeOffset.TryParse(dateStr, null, DateTimeStyles.AssumeUniversal, out var timestamp))
-            {
                 if (timestamp.UtcDateTime.Date == DateTime.UtcNow.Date && !string.IsNullOrWhiteSpace(text))
-                {
                     messages.Add(text);
-                }
-            }
         }
 
         return messages;
