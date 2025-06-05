@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.SemanticKernel;
 using Spectre.Console.Cli;
 using TeleBrief;
 using TeleBrief.Commands;
@@ -8,7 +7,6 @@ using TeleBrief.Infrastructure;
 
 var services = new ServiceCollection();
 
-// Configure application
 var config = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("app.settings.json", optional: false, reloadOnChange: true)
@@ -18,11 +16,9 @@ var config = new ConfigurationBuilder()
 var appConfig = new AppConfig();
 config.Bind(appConfig);
 
-// Register services
 services.AddSingleton(appConfig);
 services.AddSingleton(KernelBuilder.BuildKernel(appConfig));
 
-// Configure CLI
 var registrar = new TypeRegistrar(services);
 var app = new CommandApp(registrar);
 
