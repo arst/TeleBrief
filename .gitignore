@@ -409,4 +409,7 @@ FodyWeavers.xsd
 #local config
 local.settings.json
 
+# local database
+*.db
+
 
