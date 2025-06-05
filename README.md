@@ -12,11 +12,21 @@ categories.
 - 🚫 Filters out noise, speculation, ads, and irrelevant content
 - 📊 Presents information in a clean, structured format
 - 📈 Tracks state of important topics over time
+- ⚡ Smart caching of summaries for faster responses
 
 ## Commands
 
-- `news` - Get today's news summary from configured channels
+- `news` - Get today's news summary from configured channels (cached for 1 hour)
 - `beat` - Check the current state of monitored topics
+
+## Performance
+
+The tool implements smart caching to improve performance:
+
+- News summaries are cached for 1 hour
+- Subsequent requests within the cache window return instantly
+- Cache is automatically invalidated after 1 hour
+- New summaries are generated only when needed
 
 ## Configuration
 
@@ -47,13 +57,14 @@ Example configuration:
 ### Topic Monitoring
 
 TeleBrief can track the state of important topics over time. Each topic:
+
 - Has a state value from 1 (best) to 100 (worst)
 - Maintains historical context between runs
 - Provides analysis of state changes
 - Shows visual indicators with color-coded severity:
-  - 🟢 Green (1-30): Good/Stable situation
-  - 🟡 Yellow (31-70): Moderate concern
-  - 🔴 Red (71-100): Critical situation
+    - 🟢 Green (1-30): Good/Stable situation
+    - 🟡 Yellow (31-70): Moderate concern
+    - 🔴 Red (71-100): Critical situation
 
 ## Usage
 

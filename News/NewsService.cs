@@ -1,11 +1,39 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.SemanticKernel;
 using TeleBrief.Infrastructure;
+using TeleBrief.Infrastructure.Data;
 
 namespace TeleBrief.News;
 
-public class NewsService(Kernel kernel, AppConfig appConfig)
+public class NewsService(AppConfig appConfig, Kernel kernel, AppDbContext dbContext)
 {
-    public async Task<string> GetTodaySummary()
+    private static readonly TimeSpan CacheDuration = TimeSpan.FromHours(1);
+
+    public async Task<string?> GetTodaySummary()
+    {
+        var cachedSummary = await dbContext.NewsSummaries
+            .OrderByDescending(s => s.CreatedAt)
+            .FirstOrDefaultAsync();
+
+        if (cachedSummary != null && DateTime.UtcNow - cachedSummary.CreatedAt <= CacheDuration)
+            return cachedSummary.Summary;
+
+        var summary = await GenerateNewSummary();
+
+        if (!string.IsNullOrWhiteSpace(summary))
+        {
+            dbContext.NewsSummaries.Add(new NewsSummary
+            {
+                Summary = summary,
+                CreatedAt = DateTime.UtcNow
+            });
+            await dbContext.SaveChangesAsync();
+        }
+
+        return summary;
+    }
+
+    private async Task<string?> GenerateNewSummary()
     {
         var summarizeMessagesFunction = kernel.CreateFunctionFromPrompt(
             "Summarize the following Telegram messages. Ignore speculation or noise. Ignore reactions, comments and so on. Ignore commercials, promotions and ads. Always answer in English. Keep only meaningful facts:\n{{$input}}");
@@ -49,9 +77,10 @@ public class NewsService(Kernel kernel, AppConfig appConfig)
             }
         }
 
+        if (summaries.Count == 0) return null;
+
         var finalSummary = await kernel.InvokeAsync(finalSummaryFunction,
             new KernelArguments { ["input"] = string.Join("\n", summaries) });
-
-        return finalSummary.GetValue<string>() ?? string.Empty;
+        return finalSummary.GetValue<string>();
     }
 }

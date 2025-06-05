@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<TopicState> TopicStates { get; set; } = null!;
+    public DbSet<NewsSummary> NewsSummaries { get; set; } = null!;
 
     public string DbPath { get; }
 
