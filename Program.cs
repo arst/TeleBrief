@@ -9,14 +9,14 @@ using TeleBrief.Topics;
 
 var services = new ServiceCollection();
 
-var config = new ConfigurationBuilder()
+var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("app.settings.json", false, true)
     .AddJsonFile("local.settings.json", true, true)
     .Build();
 
 var appConfig = new AppConfig();
-config.Bind(appConfig);
+configuration.Bind(appConfig);
 
 services.AddSingleton(appConfig);
 services.AddSingleton(KernelBuilder.BuildKernel(appConfig));
@@ -33,11 +33,11 @@ using (var scope = services.BuildServiceProvider().CreateScope())
 var registrar = new TypeRegistrar(services);
 var app = new CommandApp(registrar);
 
-app.Configure(config =>
+app.Configure(c =>
 {
-    config.AddCommand<NewsCommand>("news")
+    c.AddCommand<NewsCommand>("news")
         .WithDescription("Get today's news summary from configured Telegram channels");
-    config.AddCommand<HeartbeatCommand>("beat")
+    c.AddCommand<HeartbeatCommand>("beat")
         .WithDescription("Get today's state of topics based on news summary");
 });
 
