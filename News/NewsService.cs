@@ -36,9 +36,19 @@ public class NewsService(AppConfig appConfig, Kernel kernel, AppDbContext dbCont
     private async Task<string?> GenerateNewSummary()
     {
         var summarizeMessagesFunction = kernel.CreateFunctionFromPrompt(
-            "Summarize the following Telegram messages. Ignore speculation or noise. Ignore reactions, comments and so on. Ignore commercials, promotions and ads. Always answer in English. Keep only meaningful facts:\n{{$input}}");
+            """
+            Metadata:
+            Today is: {{Date.GetTodayDate}}
+            Task:
+            Summarize the following Telegram messages. Ignore speculation or noise. Ignore reactions, comments and so on. Ignore commercials, promotions and ads. Always answer in English. Keep only meaningful facts.
+            Today news:
+            {{$input}}
+            """);
         var finalSummaryFunction = kernel.CreateFunctionFromPrompt(
             """
+            Metadata:
+            Today is: {{Date.GetTodayDate}}
+            Task:
             You are given several summaries of Telegram news.
             Your task is to:
             - Merge them into a single, concise summary

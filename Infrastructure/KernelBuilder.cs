@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using TeleBrief.Infrastructure.Gemini;
+using TeleBrief.Infrastructure.Plugins;
 
 namespace TeleBrief.Infrastructure;
 
@@ -9,21 +10,25 @@ public static class KernelBuilder
 {
     public static Kernel BuildKernel(AppConfig config)
     {
-        Kernel? kernel = null;
+        var builder = Kernel.CreateBuilder();
 
         if (!string.IsNullOrEmpty(config.Gemini.Key))
         {
-            var geminiBuilder = Kernel.CreateBuilder();
-            geminiBuilder.Services.AddSingleton<IChatCompletionService>(new GeminiChatCompletionService(
+            builder.Services.AddSingleton<IChatCompletionService>(new GeminiChatCompletionService(
                 config.Gemini.Endpoint, config.Gemini.Model, config.Gemini.Key, new Dictionary<string, object?>()));
-            kernel = geminiBuilder.Build();
         }
 
         if (!string.IsNullOrEmpty(config.AzureOpenAiDeployment.Key))
-            kernel = Kernel.CreateBuilder()
+        {
+            builder
                 .AddAzureOpenAIChatCompletion(config.AzureOpenAiDeployment.Name, config.AzureOpenAiDeployment.Endpoint,
                     config.AzureOpenAiDeployment.Key)
                 .Build();
+        }
+        
+        var kernel = builder.Build();
+
+        kernel.ImportPluginFromObject(new DatePlugin(), "Date");
 
         if (kernel is null)
             throw new ApplicationException(
