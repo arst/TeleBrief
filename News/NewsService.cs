@@ -2,10 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.SemanticKernel;
 using TeleBrief.Infrastructure;
 using TeleBrief.Infrastructure.Data;
+using TeleBrief.Infrastructure.Memory;
 
 namespace TeleBrief.News;
 
-public class NewsService(AppConfig appConfig, Kernel kernel, AppDbContext dbContext)
+public class NewsService(AppConfig appConfig, Kernel kernel, AppDbContext dbContext, FactStore factStore)
 {
     private static readonly TimeSpan CacheDuration = TimeSpan.FromHours(1);
 

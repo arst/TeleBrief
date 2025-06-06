@@ -4,6 +4,7 @@ using Spectre.Console.Cli;
 using TeleBrief.Commands;
 using TeleBrief.Infrastructure;
 using TeleBrief.Infrastructure.Data;
+using TeleBrief.Infrastructure.Memory;
 using TeleBrief.News;
 using TeleBrief.Topics;
 
@@ -23,6 +24,7 @@ services.AddSingleton(KernelBuilder.BuildKernel(appConfig));
 services.AddDbContext<AppDbContext>();
 services.AddScoped<TopicAnalysisService>();
 services.AddScoped<NewsService>();
+services.AddScoped<FactStore>();
 
 using (var scope = services.BuildServiceProvider().CreateScope())
 {

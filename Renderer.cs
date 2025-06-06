@@ -6,34 +6,10 @@ namespace TeleBrief;
 
 public static class Renderer
 {
-    public static void RenderSummary(string? input)
+    public static void RenderSummary(Dictionary<string, List<string>> sections)
     {
-        if (string.IsNullOrWhiteSpace(input)) return;
+        if (sections.Count == 0) return;
 
-        var lines = input.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-        var sections = new Dictionary<string, List<string>>();
-
-        string? currentCategory = null;
-
-        foreach (var rawLine in lines)
-        {
-            var line = rawLine.Trim();
-
-            // Detect new category
-            if (line.EndsWith(":"))
-            {
-                currentCategory = line.TrimEnd(':').Trim();
-                sections[currentCategory] = new List<string>();
-            }
-            // Add bullet to current category
-            else if (line.StartsWith("-") && currentCategory != null)
-            {
-                var fact = line.TrimStart('-', ' ').Trim();
-                if (!string.IsNullOrWhiteSpace(fact)) sections[currentCategory].Add(fact);
-            }
-        }
-
-        // Render
         foreach (var (category, facts) in sections)
         {
             var sb = new StringBuilder();

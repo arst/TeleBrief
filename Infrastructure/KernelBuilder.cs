@@ -13,19 +13,15 @@ public static class KernelBuilder
         var builder = Kernel.CreateBuilder();
 
         if (!string.IsNullOrEmpty(config.Gemini.Key))
-        {
             builder.Services.AddSingleton<IChatCompletionService>(new GeminiChatCompletionService(
                 config.Gemini.Endpoint, config.Gemini.Model, config.Gemini.Key, new Dictionary<string, object?>()));
-        }
 
         if (!string.IsNullOrEmpty(config.AzureOpenAiDeployment.Key))
-        {
             builder
                 .AddAzureOpenAIChatCompletion(config.AzureOpenAiDeployment.Name, config.AzureOpenAiDeployment.Endpoint,
                     config.AzureOpenAiDeployment.Key)
                 .Build();
-        }
-        
+
         var kernel = builder.Build();
 
         kernel.ImportPluginFromObject(new DatePlugin(), "Date");
