@@ -27,7 +27,7 @@ public class TopicAnalysisService
 
         foreach (var topic in _config.Topics)
         {
-            var facts = await _factStore.GetFacts("topic.Name + topic.Description");
+            var facts = await _factStore.GetFacts(topic.Name + " " + topic.Description);
             var factsText = string.Join("\n", facts.OrderBy(f => f.Date).Select(f => f.Text));
 
             var currentState = await _dbContext.TopicStates
@@ -60,7 +60,8 @@ public class TopicAnalysisService
             var result = await _kernel.InvokePromptAsync(analysisPrompt);
             var analysisText = result.GetValue<string>();
 
-            if (string.IsNullOrWhiteSpace(analysisText)) return currentStates;
+            if (string.IsNullOrWhiteSpace(analysisText))
+                continue;
 
             var lines = analysisText.Split('\n', StringSplitOptions.RemoveEmptyEntries);
             var newState = int.Parse(lines[0].Split(':')[1].Trim());
