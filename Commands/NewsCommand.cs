@@ -10,7 +10,7 @@ public class NewsCommand(NewsService newsService, FactStore factStore)
     public override async Task<int> ExecuteAsync(CommandContext context)
     {
         var summary = await newsService.GetTodaySummary();
-        var categorizedFacts = GetCategorizedFacts(summary);
+        var categorizedFacts = SummaryParser.Parse(summary);
 
         foreach (var (category, facts) in categorizedFacts)
         foreach (var fact in facts)
@@ -25,36 +25,5 @@ public class NewsCommand(NewsService newsService, FactStore factStore)
         Renderer.RenderSummary(categorizedFacts);
 
         return 0;
-    }
-
-    private static Dictionary<string, List<string>> GetCategorizedFacts(string? input)
-    {
-        if (string.IsNullOrWhiteSpace(input)) return new Dictionary<string, List<string>>();
-
-        var sections = new Dictionary<string, List<string>>();
-
-        var lines = input.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-
-        string? currentCategory = null;
-
-        foreach (var rawLine in lines)
-        {
-            var line = rawLine.Trim();
-
-            // Detect new category
-            if (line.EndsWith(":"))
-            {
-                currentCategory = line.TrimEnd(':').Trim();
-                sections[currentCategory] = new List<string>();
-            }
-            // Add bullet to current category
-            else if (line.StartsWith("-") && currentCategory != null)
-            {
-                var fact = line.TrimStart('-', ' ').Trim();
-                if (!string.IsNullOrWhiteSpace(fact)) sections[currentCategory].Add(fact);
-            }
-        }
-
-        return sections;
     }
 }
