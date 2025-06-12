@@ -77,7 +77,7 @@ public class NewsService(AppConfig appConfig, Kernel kernel, AppDbContext dbCont
 
         foreach (var channelName in appConfig.TelegramChannels)
         {
-            var messages = await ChannelScrapper.GetTodaysMessagesFromChannel(channelName);
+            var messages = await ChannelScraper.GetTodaysMessagesFromChannel(channelName);
 
             foreach (var messagesToSummarize in messages.Chunk(appConfig.BatchSize))
             {

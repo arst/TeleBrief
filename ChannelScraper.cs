@@ -3,7 +3,7 @@ using HtmlAgilityPack;
 
 namespace TeleBrief;
 
-public class ChannelScrapper
+public class ChannelScraper
 {
     private static readonly HttpClient HttpClient = new();
 
