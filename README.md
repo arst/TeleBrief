@@ -43,7 +43,7 @@ Example configuration:
     "channel1",
     "channel2"
   ],
-  "BatchSize": 10,
+  "BatchSize": 20,
   "Topics": [
     {
       "Name": "Global Economic Stability",
@@ -53,6 +53,8 @@ Example configuration:
   ]
 }
 ```
+
+BatchSize controls how many messages are summarized at once. You can customize this value in `app.settings.json`.
 
 ### Topic Monitoring
 
