@@ -27,7 +27,7 @@ public class TopicAnalysisService
 
         foreach (var topic in _config.Topics)
         {
-            var facts = await _factStore.GetFacts(topic.Name + " " + topic.Description);
+            var facts = await _factStore.GetFacts($"{topic.Name} {topic.Description}");
             var factsText = string.Join("\n", facts.OrderBy(f => f.Date).Select(f => f.Text));
 
             var currentState = await _dbContext.TopicStates
