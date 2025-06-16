@@ -44,6 +44,16 @@ Example configuration:
     "channel2"
   ],
   "BatchSize": 20,
+  "Gemini": {
+    "Key": "your-gemini-key",
+    "Endpoint": "https://your-gemini-endpoint",
+    "Model": "gemini-1.5-flash"
+  },
+  "AzureOpenAiDeployment": {
+    "Key": "your-azure-openai-key",
+    "Endpoint": "https://your-azure-openai-endpoint",
+    "Name": "your-azure-openai-deployment-name"
+  },
   "Topics": [
     {
       "Name": "Global Economic Stability",
@@ -54,7 +64,7 @@ Example configuration:
 }
 ```
 
-BatchSize controls how many messages are summarized at once. You can customize this value in `app.settings.json`.
+BatchSize controls how many messages are summarized at once. Provide your API credentials in either the `Gemini` or `AzureOpenAiDeployment` section to enable AI summarization. You can customize these values in `app.settings.json`.
 
 ### Topic Monitoring
 
