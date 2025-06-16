@@ -1,4 +1,3 @@
-using TeleBrief;
 using Xunit;
 
 namespace TeleBrief.Tests;

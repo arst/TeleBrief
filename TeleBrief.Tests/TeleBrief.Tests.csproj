@@ -10,5 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeleBrief.csproj" />
+    <ProjectReference Include="..\TeleBrief\TeleBrief.csproj" />
   </ItemGroup>
 </Project>

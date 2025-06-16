@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeleBrief", "TeleBrief.csproj", "{A9CF8B05-9B28-4418-8002-64233EB5A924}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeleBrief", "TeleBrief/TeleBrief.csproj", "{A9CF8B05-9B28-4418-8002-64233EB5A924}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeleBrief.Tests", "TeleBrief.Tests/TeleBrief.Tests.csproj", "{2BB3EEEA-4592-48A7-92F5-C05DAE5E0EAF}"
 EndProject

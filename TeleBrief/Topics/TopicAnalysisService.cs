@@ -13,7 +13,7 @@ public class TopicAnalysisService
     private readonly FactStore _factStore;
     private readonly Kernel _kernel;
 
-    internal static int ParseStateLine(string? line, int defaultState)
+    public static int ParseStateLine(string? line, int defaultState)
     {
         if (string.IsNullOrWhiteSpace(line)) return defaultState;
 
