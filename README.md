@@ -78,18 +78,36 @@ TeleBrief can track the state of important topics over time. Each topic:
     - 🟡 Yellow (31-70): Moderate concern
     - 🔴 Red (71-100): Critical situation
 
+## Installation
+
+Run the platform specific setup script to add a `brief` command to your `PATH`.
+
+On Linux:
+
+```bash
+./scripts/install-linux.sh
+```
+
+On Windows (PowerShell):
+
+```powershell
+scripts\install-windows.ps1
+```
+
+Restart your shell and you can run commands like `brief news` or `brief beat`.
+
 ## Usage
 
 Get today's news summary:
 
 ```bash
-dotnet run -- news
+brief news
 ```
 
 Check topic states:
 
 ```bash
-dotnet run -- beat
+brief beat
 ```
 
 ## Output Format
