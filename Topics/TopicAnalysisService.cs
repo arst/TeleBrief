@@ -13,6 +13,18 @@ public class TopicAnalysisService
     private readonly FactStore _factStore;
     private readonly Kernel _kernel;
 
+    internal static int ParseStateLine(string? line, int defaultState)
+    {
+        if (string.IsNullOrWhiteSpace(line)) return defaultState;
+
+        var stateText = line;
+        var colonIndex = line.IndexOf(':');
+        if (colonIndex >= 0)
+            stateText = line[(colonIndex + 1)..].Trim();
+
+        return int.TryParse(stateText, out var state) ? state : defaultState;
+    }
+
     public TopicAnalysisService(AppDbContext dbContext, Kernel kernel, AppConfig config, FactStore factStore)
     {
         _dbContext = dbContext;
@@ -64,8 +76,13 @@ public class TopicAnalysisService
                 continue;
 
             var lines = analysisText.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-            var newState = int.Parse(lines[0].Split(':')[1].Trim());
-            var analysis = string.Join("\n", lines.Skip(1)).Replace("Analysis:", "").Trim();
+
+            var newState = ParseStateLine(lines.FirstOrDefault() ?? string.Empty, currentState?.State ?? 50);
+
+            var analysis = lines.Length > 1
+                ? string.Join("\n", lines.Skip(1))
+                : string.Empty;
+            analysis = analysis.Replace("Analysis:", "").Trim();
 
             if (currentState == null)
             {
