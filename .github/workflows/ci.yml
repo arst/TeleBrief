@@ -20,4 +20,4 @@ jobs:
       - name: Build
         run: dotnet build TeleBrief.sln --no-restore --configuration Release
       - name: Test
-        run: dotnet test TeleBrief.sln --no-build --verbosity normal
+        run: dotnet test TeleBrief.sln --no-build --configuration Release --verbosity normal
