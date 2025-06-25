@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 using TeleBrief.Commands;
@@ -11,7 +12,7 @@ using TeleBrief.Topics;
 var services = new ServiceCollection();
 
 var configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
+    .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("app.settings.json", false, true)
     .AddJsonFile("local.settings.json", true, true)
     .Build();
