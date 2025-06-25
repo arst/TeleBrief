@@ -6,7 +6,7 @@ $targetDir = Join-Path $env:USERPROFILE 'bin'
 if (-not (Test-Path $targetDir)) {
     New-Item -ItemType Directory -Path $targetDir | Out-Null
 }
-$wrapper = "@echo off`r`n" + "dotnet run --project \"$repoRoot\" -- %*"
+$wrapper = "@echo off`r`n" + "dotnet run --project `"$repoRoot`" -- %*"
 $wrapperPath = Join-Path $targetDir 'brief.cmd'
 Set-Content -Path $wrapperPath -Value $wrapper -Encoding ASCII
 if (-not ($env:Path -split ';' | Where-Object { $_ -eq $targetDir })) {
